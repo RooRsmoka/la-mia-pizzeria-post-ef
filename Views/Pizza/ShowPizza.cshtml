@@ -1,0 +1,25 @@
+﻿@{
+    ViewData["title"] = "Visualizza Pizza";
+}
+
+@model la_mia_pizzeria_static.Models.Pizza
+
+
+<div class="row">
+    <div class="col-12 col-sm-6 col-md-3 mb-3">
+        <div class="card">
+            <div class="card-img-top">
+                <img src="/img/@Model.Foto" alt="@Model.Nome" />
+            </div>
+            <div class="card-body">
+                <h3>@Model.Nome</h3>
+                <p>@Model.Descrizione</p>
+                <p>@Model.Prezzo €</p>
+            </div>
+            <div class="card-footer">
+                <button class="btn-primary btn"><a href="@Url.Action("EditPizza","Pizza",new {@Model.Id})">Modifica</a></button>
+                <button class="btn-primary btn"><a href="@Url.Action("Delete","Pizza",new {@Model.Id})">Cancella</a></button>
+            </div>
+        </div>
+    </div>
+</div>

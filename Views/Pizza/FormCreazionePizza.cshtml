@@ -1,0 +1,54 @@
+﻿@{
+    ViewData["title"] = "Crea una Pizza";
+    ViewBag.TitoloPagina = "Creazione Pizza";
+}
+
+@model la_mia_pizzeria_static.Models.Pizza
+
+@using (Html.BeginForm("CreaCardPizza", "Pizza", FormMethod.Post, new { enctype="multipart/form-data" }))
+{
+    <table cellpadding="0" cellspacing="0" class="center">
+        <tr>
+            <th colspan="2" align="center">Crea Pizza</th>
+        </tr>
+        <tr>
+            <td>@Html.DisplayNameFor(m => m.Id)</td>
+            <td>
+                @Html.TextBoxFor(m => m.Id)
+                @Html.ValidationMessage("Id")
+            </td>
+        </tr>
+        <tr>
+            <td>@Html.DisplayNameFor(m => m.Nome)</td>
+            <td>
+                @Html.TextBoxFor(m => m.Nome)
+                @Html.ValidationMessage("Nome")
+            </td>
+        </tr>
+        <tr>
+            <td>@Html.DisplayNameFor(m => m.Descrizione)</td>
+            <td>
+                @Html.TextBoxFor(m => m.Descrizione)
+                @Html.ValidationMessage("Descrizione")
+            </td>
+        </tr>
+        <tr>
+            <td>@Html.DisplayNameFor(m => m.Prezzo)</td>
+            <td>
+                @Html.TextBoxFor(m => m.Prezzo)
+                @Html.ValidationMessage("Prezzo")
+            </td>
+        </tr>
+        <tr>
+            <td>@Html.DisplayNameFor(m => m.Foto)</td>
+            <td>
+                @Html.TextBoxFor(m => m.Foto, new { type= "file" })
+                @Html.ValidationMessage("Foto")
+            </td>
+        </tr>
+        <tr>
+            <td></td>
+            <td><input type="submit" value="Submit"/></td>
+        </tr>
+    </table>
+}

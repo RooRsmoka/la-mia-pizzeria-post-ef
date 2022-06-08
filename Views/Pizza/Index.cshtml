@@ -1,0 +1,32 @@
+﻿@{
+    ViewData["title"] = "Sezione Crea Pizza";
+}
+
+@model la_mia_pizzeria_static.Models.ListaPizze
+
+<div>
+    <h1 class="display-4 text-center">Pizzeria del Centro</h1>
+    <div class="container">
+        <h2>@Html.ActionLink("Crea Pizza", "FormCreazionePizza", "Pizza")</h2>
+        <div class="row">
+            @foreach(var pizza in Model.lsPizze)
+            {
+                <div class="col-12 col-sm-6 col-md-3 mb-2">
+                    <div class="card">
+                        <div class="card-img-top">
+                            <img src="/img/@pizza.sFoto" alt="@pizza.Nome">
+                        </div>
+                        <div class="card-body">
+                            <h5 class="card-title">@pizza.Nome</h5>
+                            <p class="card-text">"@pizza.Descrizione"</p>
+                            <p>@pizza.Prezzo €</p>
+                        </div>
+                        <div class="card-footer">
+                            <button class="btn-primary btn">@Html.ActionLink("Visualizza Pizza", "ShowPizza", "Pizza", new {id = pizza.Id}, new { @class = "text-light text-decoration-none"})</button>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>
