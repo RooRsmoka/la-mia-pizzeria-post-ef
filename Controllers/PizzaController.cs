@@ -5,39 +5,49 @@ namespace la_mia_pizzeria_static.Controllers
 {
     public class PizzaController : Controller
     {
+        public static PizzaContext db = new PizzaContext();
         public static ListaPizze pizze = null;
         public IActionResult Index()
         {
+            /*
             if (pizze == null)
             {
                 pizze = new ListaPizze();
                 
-                Pizza pizzaOne = new Pizza(0, "Pizza Marinara", "Ingredienti: Pomodoro, Origano, Aglio, Basilico", 4.50, "img/Marinara.jpg");
-                Pizza pizzaTwo = new Pizza(1,"Pizza Margherita", "Ingredienti: Pomodoro, Mozzarella,Basilico", 5.00, "img/Margherita.jpg");
-                Pizza pizzaThree = new Pizza(2, "Pizza Cotto&Funghi", "Ingredienti: Pomodoro, Mozzarella, Prosc. Cotto, Funghi Porcini", 6.00, "img/Cotto&Funghi.jpg");
-                Pizza pizzaFour = new Pizza(3, "Pizza Quattro Formaggi", "Ingredienti: Pomodoro, Mozzarella, Fontina, Gorgonzola, Parmigiano Reggiano", 6.50, "img/QuattroFormaggi.jpg");
-                Pizza pizzaFive = new Pizza(4, "Pizza Salame", "Ingredienti: Pomodoro, Mozzarella, Salame Milano", 5.50, "img/Salame.jpg");
+                Pizza pizzaOne = new Pizza("Pizza Marinara", "Ingredienti: Pomodoro, Origano, Aglio, Basilico", 4.50, "img/Marinara.jpg");
+                Pizza pizzaTwo = new Pizza("Pizza Margherita", "Ingredienti: Pomodoro, Mozzarella,Basilico", 5.00, "img/Margherita.jpg");
+                Pizza pizzaThree = new Pizza("Pizza Cotto&Funghi", "Ingredienti: Pomodoro, Mozzarella, Prosc. Cotto, Funghi Porcini", 6.00, "img/Cotto&Funghi.jpg");
+                Pizza pizzaFour = new Pizza("Pizza Quattro Formaggi", "Ingredienti: Pomodoro, Mozzarella, Fontina, Gorgonzola, Parmigiano Reggiano", 6.50, "img/QuattroFormaggi.jpg");
+                Pizza pizzaFive = new Pizza("Pizza Salame", "Ingredienti: Pomodoro, Mozzarella, Salame Milano", 5.50, "img/Salame.jpg");
 
                 pizze.lsPizze.Add(pizzaOne);
                 pizze.lsPizze.Add(pizzaTwo);
                 pizze.lsPizze.Add(pizzaThree);
                 pizze.lsPizze.Add(pizzaFour);
                 pizze.lsPizze.Add(pizzaFive);
-            }
 
-            return View(pizze);
+                db.Add(pizzaOne);
+                db.Add(pizzaTwo);
+                db.Add(pizzaThree);
+                db.Add(pizzaFour);
+                db.Add(pizzaFive);
+                db.SaveChanges();
+            }
+            */
+
+            return View(db);
         }
 
         public IActionResult ShowPizza(int id)
         {
-            return View("ShowPizza", pizze.lsPizze[id]);
+            var pizzaId = db.Pizze.Where(p => p.Id == id).FirstOrDefault();
+            return View("ShowPizza", pizzaId);
         }
 
         public IActionResult FormCreazionePizza()
         {
             Pizza newPizza = new Pizza()
             {
-                Id = 0,
                 Nome = "",
                 Descrizione = "",
                 sFoto = "",
@@ -53,7 +63,7 @@ namespace la_mia_pizzeria_static.Controllers
             if (!ModelState.IsValid)
                 return View("FormCreazionePizza", DatiPizza);
 
-            string path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/img");
+            string path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\img");
 
             if (!Directory.Exists(path))
                 Directory.CreateDirectory(path);
@@ -74,14 +84,16 @@ namespace la_mia_pizzeria_static.Controllers
                 sFoto = "/img/" + fileName,
                 Prezzo = DatiPizza.Prezzo
             };
-            pizze.lsPizze.Add(nuovaPizza);
-            
+
+            db.Add(nuovaPizza);
+            db.SaveChanges();
             return View(nuovaPizza);
         }
 
         public IActionResult Edit(int id)
         {
-            return View("EditPizza", pizze.lsPizze[id]);
+            var pizzaId = db.Pizze.Where(p => p.Id == id).FirstOrDefault();
+            return View("EditPizza", pizzaId);
         }
 
         [HttpPost]
@@ -103,9 +115,9 @@ namespace la_mia_pizzeria_static.Controllers
             {
                 DatiPizza.Foto.CopyTo(stream);
             }
-
-
-            Pizza modificaPizza = pizze.lsPizze.Find(x => x.Id == DatiPizza.Id);
+            
+            var modificaPizza = db.Pizze
+                .Where(pizza => pizza.Id == DatiPizza.Id).FirstOrDefault();
 
             modificaPizza.Nome = DatiPizza.Nome;
             modificaPizza.Descrizione = DatiPizza.Descrizione;
@@ -122,14 +134,18 @@ namespace la_mia_pizzeria_static.Controllers
 
             modificaPizza.Prezzo = DatiPizza.Prezzo;
 
+            db.Pizze.UpdateRange(modificaPizza);
+            db.SaveChanges();
+
             return RedirectToAction("Index");
         }
 
         [HttpGet]
         public IActionResult Delete(int id)
         {
-            Pizza rimuoviPizza = pizze.lsPizze.Find(x => x.Id == id);
-            pizze.lsPizze.Remove(rimuoviPizza);
+            var pizzaId = db.Pizze.Where(p => p.Id == id).FirstOrDefault();
+            db.Pizze.Remove(pizzaId);
+            db.SaveChanges();
             return RedirectToAction("Index");
         }
     }

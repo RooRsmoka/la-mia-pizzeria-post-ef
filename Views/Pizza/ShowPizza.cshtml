@@ -6,10 +6,10 @@
 
 
 <div class="row">
-    <div class="col-12 col-sm-6 col-md-3 mb-3">
+    <div class="col-12">
         <div class="card">
             <div class="card-img-top">
-                <img src="/img/@Model.Foto" alt="@Model.Nome" />
+                <img src="@Model.sFoto" class="img-fluid" alt="@Model.Nome" />
             </div>
             <div class="card-body">
                 <h3>@Model.Nome</h3>
@@ -17,8 +17,10 @@
                 <p>@Model.Prezzo €</p>
             </div>
             <div class="card-footer">
-                <button class="btn-primary btn"><a href="@Url.Action("EditPizza","Pizza",new {@Model.Id})">Modifica</a></button>
-                <button class="btn-primary btn"><a href="@Url.Action("Delete","Pizza",new {@Model.Id})">Cancella</a></button>
+                <button class="btn-primary btn">@Html.ActionLink("Modifica Pizza", "Edit", "Pizza", new { Model.Id }, new { @class = "text-light text-decoration-none"})</button>
+                <button class="btn-danger btn">@Html.ActionLink("Elimina Pizza", "Delete", "Pizza", new { Model.Id }, new { @class = "text-light text-decoration-none"})</button>
+                @*<button class="btn-primary btn"><a href="@Url.Action("Edit", "Pizza", new { @Model.Id })">Modifica</a></button>
+                <button class="btn-primary btn"><a href="@Url.Action("Delete", "Pizza", new { @Model.Id })">Cancella</a></button>*@
             </div>
         </div>
     </div>

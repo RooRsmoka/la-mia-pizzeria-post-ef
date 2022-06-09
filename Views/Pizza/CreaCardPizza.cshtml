@@ -34,8 +34,11 @@
             @Html.DisplayNameFor(model => model.Prezzo)
         </dt>
         <dd>
-            @Html.DisplayFor(model => model.Prezzo)
+            @Html.DisplayFor(model => model.Prezzo) €
         </dd>
     </dl>
+</div>
+<div class="text-center">
+    <button class="btn-primary btn">@Html.ActionLink("Indietro", "index", "Pizza", new { @class = "text-light text-decoration-none"})</button>
 </div>
 }
